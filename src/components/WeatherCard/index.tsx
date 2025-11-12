@@ -27,9 +27,10 @@ type data = {
 type WeatherCardProps = {
     isLoading: boolean;
     data: data;
+    coords: { lat: number, lon: number; } | null
 };
 
-export function WeatherCard({ data, isLoading }: WeatherCardProps) {
+export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
     const weatherMap: Record<string, React.ReactNode> = {
         "Céu limpo": <SunIcon />,
@@ -82,7 +83,7 @@ export function WeatherCard({ data, isLoading }: WeatherCardProps) {
                             <div className="flex gap-2"><WindIcon /><p>{data.current.wind_speed_10m} {data.current_units.wind_speed_10m}</p></div>
 
                             <div className="flex gap-2"><DropletIcon /><p>{data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}</p></div>
-                            <div className="flex gap-2"><MapPinIcon /> {data.latitude} {data.longitude}</div>
+                            <div className="flex gap-2"><MapPinIcon /> {coords?.lat} {coords?.lon}</div>
                         </div>
                     </div>
                 </>
