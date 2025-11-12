@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
+import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { getWeather } from "../../utils/getWeather";
 
@@ -83,6 +83,7 @@ export function WeatherCard() {
                             'text-lg md:text-xl',
                             '[&_svg]:text-blue-200'
                         )}>
+
                             <div className="flex gap-2"><ThermometerIcon /><p className={clsx(
                                 data?.current.temperature_2m <= 12 && "text-blue-300",
                                 data?.current.temperature_2m > 12 &&
@@ -90,8 +91,11 @@ export function WeatherCard() {
                                 "text-green-300",
                                 data?.current.temperature_2m > 25 && "text-red-300"
                             )}>{data.current.temperature_2m} {data.current_units.temperature_2m}</p></div>
+
                             <div className="flex gap-2"><WindIcon /><p>{data.current.wind_speed_10m} {data.current_units.wind_speed_10m}</p></div>
+
                             <div className="flex gap-2"><DropletIcon /><p>{data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}</p></div>
+                            <div className="flex gap-2"><MapPinIcon /> {data.latitude} {data.longitude}</div>
                         </div>
                     </div>
                 </>
