@@ -5,7 +5,7 @@ export function Header() {
             className={clsx(
                 "p-6 md:p-8",
                 "m-4 md:m-8",
-                'w-[200px] md:w-[400px] lg:w-[600px]',
+                'w-[300px] md:w-[400px] lg:w-[600px]',
                 "rounded-2xl bg-neutral-700/80 backdrop-blur-sm",
                 "shadow-lg shadow-black/30",
             )}
