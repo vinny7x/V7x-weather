@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { CloudDrizzleIcon, CloudFogIcon, CloudIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, DropletIcon, HelpCircleIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
+import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { getWeather } from "../../utils/getWeather";
 
@@ -46,7 +46,7 @@ export function WeatherCard() {
     }
     const weatherMap: Record<string, React.ReactNode> = {
         "Céu limpo": <SunIcon />,
-        "Parcialmente nublado": <CloudIcon />,
+        "Parcialmente nublado": <CloudyIcon />,
         "Neblina": <CloudFogIcon />,
         "Chuvisco": <CloudDrizzleIcon />,
         "Neve": <CloudSnowIcon />,
@@ -73,10 +73,12 @@ export function WeatherCard() {
                     )}></h2>
                     <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
                         <div className={clsx(
+                            'flex flex-col items-center',
                             '[&_svg]:text-blue-400',
                             '[&_svg]:h-30 [&_svg]:w-30',
                             'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                        )}>{weatherMap[getWeather(data.current.weather_code)]}</div>
+                        )}>{weatherMap[getWeather(data.current.weather_code)]}
+                            <p>{getWeather(data.current.weather_code)}</p></div>
                         <div className={clsx(
                             'text-lg md:text-xl',
                             '[&_svg]:text-blue-200'
