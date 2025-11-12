@@ -2,6 +2,7 @@ import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
 import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
+import { useQuery } from "@tanstack/react-query";
 
 type data = {
     latitude: number;
@@ -27,7 +28,7 @@ type data = {
 type WeatherCardProps = {
     isLoading: boolean;
     data: data;
-    coords: { lat: number, lon: number; } | null
+    coords: { lat: number, lon: number; } | null;
 };
 
 export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
@@ -42,6 +43,18 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
         "Tempestade": <CloudLightningIcon />,
         "Desconhecido": <HelpCircleIcon />,
     };
+    const location = useQuery({
+        queryKey: ['location', coords],
+        enabled: !!coords,
+        queryFn: async () => {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?lat=${coords?.lat}&lon=${coords?.lon}&format=json`
+            );
+            if (!res.ok) throw new Error("Falha ao buscar clima");
+            console.log(res);
+            return res.json();
+        },
+    });
     return (
         <div className="flex justify-center">
             <div
@@ -53,20 +66,45 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
             >
 
                 {isLoading || !data ? <SpinLoader /> : (<>
+
                     <span className="fixed">
+
                         {data.current.is_day ? <SunIcon color="white" size='24' /> : <MoonIcon color="white" size='24' />}
                     </span>
+
                     <h2 className={clsx(
                         'text-3xl text-white text-center'
                     )}></h2>
                     <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
+
                         <div className={clsx(
                             'flex flex-col items-center',
-                            '[&_svg]:text-blue-400',
-                            '[&_svg]:h-30 [&_svg]:w-30',
-                            'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                        )}>{weatherMap[getWeather(data.current.weather_code)]}
-                            <p className="text-gray-400">{getWeather(data.current.weather_code)}</p></div>
+
+                        )}>
+                            <span className={clsx(
+                                '[&_svg]:text-blue-400',
+                                '[&_svg]:h-30 [&_svg]:w-30',
+                                'md:[&_svg]:h-40 md:[&_svg]:w-40'
+                            )}>{weatherMap[getWeather(data.current.weather_code)]}</span>
+                            <div className="flex items-center gap-2 [&_svg]:text-red-400">
+                                <MapPinIcon />
+                                {location.isLoading ? (
+                                    <SpinLoader />
+                                ) : (
+                                    location.data && (
+                                        <span>
+                                            {location.data.address.town ||
+                                                location.data.address.city ||
+                                                location.data.address.village ||
+                                                "Local desconhecido"} - {location.data.address.state}
+                                        </span>
+                                    )
+                                )}
+                            </div>
+                            <p className="text-gray-400">{getWeather(data.current.weather_code)}</p>
+
+                        </div>
+
                         <div className={clsx(
                             'text-lg md:text-xl',
                             '[&_svg]:text-blue-200'
@@ -83,7 +121,8 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                             <div className="flex gap-2"><WindIcon /><p>{data.current.wind_speed_10m} {data.current_units.wind_speed_10m}</p></div>
 
                             <div className="flex gap-2"><DropletIcon /><p>{data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}</p></div>
-                            <div className="flex gap-2"><MapPinIcon /> {coords?.lat} {coords?.lon}</div>
+
+
                         </div>
                     </div>
                 </>
