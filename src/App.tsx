@@ -1,15 +1,16 @@
-import { Header } from "./components/Header";
-import { WeatherCard } from "./components/WeatherCard";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Home } from "./pages/Home";
+
+const queryClient = new QueryClient(); // fora do componente
 
 function App() {
-  const queryClient = new QueryClient();
-  return (<>
-    <Header />
+  
+
+  return (
     <QueryClientProvider client={queryClient}>
-      <WeatherCard />
+      <Home/>
     </QueryClientProvider>
-  </>
   );
 }
+
 export default App;

@@ -1,49 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
 import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
 import { getWeather } from "../../utils/getWeather";
 
-export function WeatherCard() {
-    const [coords, setCoords] = useState<{ lat: number, lon: number; } | null>(null);
-    const [geoError, setGeoError] = useState(false);
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setCoords({
-                    lat: pos.coords.latitude,
-                    lon: pos.coords.longitude,
-                });
-            },
-            () => {
-                setGeoError(true);
-            });
-    }, []);
-    const { data, isLoading } = useQuery({
-        queryKey: ["weather", coords],
-        enabled: !!coords,
-        queryFn: async () => {
-            const res = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${coords!.lat}&longitude=${coords!.lon}&current=temperature_2m,relative_humidity_2m,is_day,rain,wind_speed_10m,weather_code`
-            );
-            if (!res.ok) throw new Error("Falha ao buscar clima");
-            console.log(res);
-            const json = await res.json();
-            return json;
-        },
-    });
-    if (geoError) {
-        return (
-            <div className={clsx(
-                'text-red-500 bg-neutral-600 rounded-lg border-2 border-red-400 ',
-                'font-semibold text-center m-4 p-4',
-                'text-lg md:text-xl'
-            )}>
-                Ops! Não conseguimos acessar sua localização. Ative o acesso no navegador para ver o clima da sua região.
-            </div>
-        );
-    }
+type data = {
+    latitude: number;
+    longitude: number;
+    current_units: {
+        is_day: number,
+        weather_code: number,
+        temperature_2m: number;
+        wind_speed_10m: number;
+        relative_humidity_2m: number;
+    },
+    current: {
+        is_day: number,
+        weather_code: number,
+        temperature_2m: number;
+        wind_speed_10m: number;
+        relative_humidity_2m: number;
+
+
+    };
+};
+
+type WeatherCardProps = {
+    isLoading: boolean;
+    data: data;
+};
+
+export function WeatherCard({ data, isLoading }: WeatherCardProps) {
+
     const weatherMap: Record<string, React.ReactNode> = {
         "Céu limpo": <SunIcon />,
         "Parcialmente nublado": <CloudyIcon />,
