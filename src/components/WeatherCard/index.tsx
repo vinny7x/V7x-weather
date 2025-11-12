@@ -78,7 +78,7 @@ export function WeatherCard() {
                             '[&_svg]:h-30 [&_svg]:w-30',
                             'md:[&_svg]:h-40 md:[&_svg]:w-40'
                         )}>{weatherMap[getWeather(data.current.weather_code)]}
-                            <p>{getWeather(data.current.weather_code)}</p></div>
+                            <p className="text-gray-400">{getWeather(data.current.weather_code)}</p></div>
                         <div className={clsx(
                             'text-lg md:text-xl',
                             '[&_svg]:text-blue-200'
