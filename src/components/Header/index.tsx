@@ -18,7 +18,8 @@ export function Header() {
                 )}
             >
                 <span className="text-blue-400 font-bold">V7</span>
-                <span className="text-neutral-300">Time</span>
+                <span className="text-gray-400">x</span>
+                <span className="text-neutral-300">Weather</span>
             </h1>
         </header>
     );
