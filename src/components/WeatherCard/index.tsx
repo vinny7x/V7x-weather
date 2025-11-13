@@ -59,7 +59,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
         <div className="flex justify-center">
             <div
                 className={clsx(
-                    "m-4 max-w-300 w-100 p-4",
+                    "m-4 w-auto p-4",
                     "bg-neutral-600 rounded-lg border border-white",
                     'shadow-lg shadow-white/30'
                 )}
