@@ -1,6 +1,6 @@
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, WindIcon } from "lucide-react";
+import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
 import { useQuery } from "@tanstack/react-query";
 
@@ -8,11 +8,12 @@ type data = {
     latitude: number;
     longitude: number;
     current_units: {
-        is_day: number,
-        weather_code: number,
-        temperature_2m: number;
-        wind_speed_10m: number;
-        relative_humidity_2m: number;
+        is_day: string,
+        weather_code: string,
+        temperature_2m: string;
+        wind_speed_10m: string;
+        relative_humidity_2m: string;
+        apparent_temperature: string
     },
     current: {
         is_day: number,
@@ -20,8 +21,7 @@ type data = {
         temperature_2m: number;
         wind_speed_10m: number;
         relative_humidity_2m: number;
-
-
+        apparent_temperature: number;
     };
 };
 
@@ -78,7 +78,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                     <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
 
                         <div className={clsx(
-                            'flex flex-col items-center',
+                            'flex flex-col items-center gap-2',
 
                         )}>
                             <span className={clsx(
@@ -102,14 +102,22 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                 )}
                             </div>
                             <p className="text-gray-400">{getWeather(data.current.weather_code)}</p>
-
+                            <p className={clsx(
+                                'flex gap-2 justify-center items-center',
+                                '[&_svg]:text-orange-300',
+                                'text-sm'
+                            )}><ThermometerSunIcon /> Sensação térmica:
+                                <p className={clsx(
+                                    'font-semibold',
+                                    'text-orange-300'
+                                )}>{data.current.apparent_temperature} {data.current_units.apparent_temperature}
+                                </p></p>
                         </div>
 
                         <div className={clsx(
                             'text-lg md:text-xl',
                             '[&_svg]:text-blue-200'
                         )}>
-
                             <div className="flex gap-2"><ThermometerIcon /><p className={clsx(
                                 data?.current.temperature_2m <= 12 && "text-blue-300",
                                 data?.current.temperature_2m > 12 &&
