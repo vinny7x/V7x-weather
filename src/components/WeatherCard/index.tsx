@@ -13,7 +13,7 @@ type data = {
         temperature_2m: string;
         wind_speed_10m: string;
         relative_humidity_2m: string;
-        apparent_temperature: string
+        apparent_temperature: string;
     },
     current: {
         is_day: number,
@@ -81,11 +81,24 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                             'flex flex-col items-center gap-2',
 
                         )}>
-                            <span className={clsx(
-                                '[&_svg]:text-blue-400',
-                                '[&_svg]:h-30 [&_svg]:w-30',
-                                'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                            )}>{weatherMap[getWeather(data.current.weather_code)]}</span>
+                            <div className="flex">
+
+
+                                <span className={clsx(
+                                    '[&_svg]:text-blue-400',
+                                    '[&_svg]:h-30 [&_svg]:w-30',
+                                    'md:[&_svg]:h-40 md:[&_svg]:w-40'
+                                )}>{weatherMap[getWeather(data.current.weather_code)]}</span>
+                                <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
+                                    data?.current.temperature_2m <= 12 && "text-blue-300",
+                                    data?.current.temperature_2m > 12 &&
+                                    data?.current.temperature_2m <= 25 &&
+                                    "text-green-300",
+                                    data?.current.temperature_2m > 25 && "text-red-300"
+                                )}> {data.current.temperature_2m}</span></p>
+
+
+                            </div>
                             <div className="flex items-center gap-2 [&_svg]:text-red-400">
                                 <MapPinIcon />
                                 {location.isLoading ? (
@@ -102,36 +115,58 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                 )}
                             </div>
                             <p className="text-gray-400">{getWeather(data.current.weather_code)}</p>
-                            <p className={clsx(
-                                'flex gap-2 justify-center items-center',
-                                '[&_svg]:text-orange-300',
-                                'text-sm'
-                            )}><ThermometerSunIcon /> Sensação térmica:
-                                <p className={clsx(
-                                    'font-semibold',
-                                    'text-orange-300'
-                                )}>{data.current.apparent_temperature} {data.current_units.apparent_temperature}
-                                </p></p>
-                        </div>
-
-                        <div className={clsx(
-                            'text-lg md:text-xl',
-                            '[&_svg]:text-blue-200'
-                        )}>
-                            <div className="flex gap-2"><ThermometerIcon /><p className={clsx(
-                                data?.current.temperature_2m <= 12 && "text-blue-300",
-                                data?.current.temperature_2m > 12 &&
-                                data?.current.temperature_2m <= 25 &&
-                                "text-green-300",
-                                data?.current.temperature_2m > 25 && "text-red-300"
-                            )}>{data.current.temperature_2m} {data.current_units.temperature_2m}</p></div>
-
-                            <div className="flex gap-2"><WindIcon /><p>{data.current.wind_speed_10m} {data.current_units.wind_speed_10m}</p></div>
-
-                            <div className="flex gap-2"><DropletIcon /><p>{data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}</p></div>
-
 
                         </div>
+
+                        <div
+                            className={clsx(
+                                'flex flex-col gap-1 justify-center items-start',
+                                '[&_svg]:size-5'
+                            )}
+                        >
+                            <p
+                                className={clsx(
+                                    'flex gap-2 justify-center items-center',
+                                    '[&_svg]:text-orange-300',
+                                    'text-sm md:text-base'
+                                )}
+                            >
+                                <ThermometerSunIcon />
+                                Sensação térmica:
+                                <span className="font-semibold text-orange-300">
+                                    {data.current.apparent_temperature} {data.current_units.apparent_temperature}
+                                </span>
+                            </p>
+
+                            <p
+                                className={clsx(
+                                    'flex gap-2 justify-center items-center',
+                                    '[&_svg]:text-blue-300',
+                                    'text-sm md:text-base'
+                                )}
+                            >
+                                <WindIcon />
+                                Vento:
+                                <span className="font-semibold text-blue-300">
+                                    {data.current.wind_speed_10m} {data.current_units.wind_speed_10m}
+                                </span>
+                            </p>
+
+                            <p
+                                className={clsx(
+                                    'flex gap-2 justify-center items-center',
+                                    '[&_svg]:text-cyan-300',
+                                    'text-sm md:text-base'
+                                )}
+                            >
+                                <DropletIcon />
+                                Umidade:
+                                <span className="font-semibold text-cyan-300">
+                                    {data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}
+                                </span>
+                            </p>
+                        </div>
+
                     </div>
                 </>
                 )}
