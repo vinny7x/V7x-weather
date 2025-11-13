@@ -95,7 +95,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     data?.current.temperature_2m <= 25 &&
                                     "text-green-300",
                                     data?.current.temperature_2m > 25 && "text-red-300"
-                                )}> {data.current.temperature_2m}</span></p>
+                                )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
 
 
                             </div>
