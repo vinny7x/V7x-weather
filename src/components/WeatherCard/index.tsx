@@ -37,6 +37,9 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
 
     const location = useReverseGeocode(coords);
+    const weatherLabel = getWeather(data?.current.weather_code);
+    const weatherIcon = weatherIcons[weatherLabel];
+
     return (
         <div className="flex justify-center">
             <div
@@ -68,9 +71,9 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     '[&_svg]:text-blue-400',
                                     '[&_svg]:h-30 [&_svg]:w-30',
                                     'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                                )}>{weatherIcons[getWeather(data.current.weather_code)]}</span>
+                                )}>{weatherIcon}</span>
                                 <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
-                                   getTempColor(data.current.temperature_2m)
+                                    getTempColor(data.current.temperature_2m)
                                 )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
 
                             </div>
@@ -89,7 +92,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     )
                                 )}
                             </div>
-                            <p className="text-gray-400">{getWeather(data.current.weather_code)}</p>
+                            <p className="text-gray-400">{weatherLabel}</p>
 
                         </div>
 
