@@ -2,7 +2,7 @@ import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
 import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
-import { useQuery } from "@tanstack/react-query";
+import { useReverseGeocode } from "../../hooks/useReverseGeocode";
 
 type data = {
     latitude: number;
@@ -43,18 +43,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
         "Tempestade": <CloudLightningIcon />,
         "Desconhecido": <HelpCircleIcon />,
     };
-    const location = useQuery({
-        queryKey: ['location', coords],
-        enabled: !!coords,
-        queryFn: async () => {
-            const res = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?lat=${coords?.lat}&lon=${coords?.lon}&format=json`
-            );
-            if (!res.ok) throw new Error("Falha ao buscar clima");
-            console.log(res);
-            return res.json();
-        },
-    });
+    const location = useReverseGeocode(coords);
     return (
         <div className="flex justify-center">
             <div
