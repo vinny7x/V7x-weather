@@ -1,8 +1,9 @@
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { CloudDrizzleIcon, CloudFogIcon, CloudLightningIcon, CloudRainIcon, CloudSnowIcon, CloudyIcon, DropletIcon, HelpCircleIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
+import { DropletIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
+import { weatherIcons } from "../../utils/weatherIcons";
 
 type data = {
     latitude: number;
@@ -33,16 +34,7 @@ type WeatherCardProps = {
 
 export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
-    const weatherMap: Record<string, React.ReactNode> = {
-        "Céu limpo": <SunIcon />,
-        "Parcialmente nublado": <CloudyIcon />,
-        "Neblina": <CloudFogIcon />,
-        "Chuvisco": <CloudDrizzleIcon />,
-        "Neve": <CloudSnowIcon />,
-        "Pancadas de chuva": <CloudRainIcon />,
-        "Tempestade": <CloudLightningIcon />,
-        "Desconhecido": <HelpCircleIcon />,
-    };
+
     const location = useReverseGeocode(coords);
     return (
         <div className="flex justify-center">
@@ -77,7 +69,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     '[&_svg]:text-blue-400',
                                     '[&_svg]:h-30 [&_svg]:w-30',
                                     'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                                )}>{weatherMap[getWeather(data.current.weather_code)]}</span>
+                                )}>{weatherIcons[getWeather(data.current.weather_code)]}</span>
                                 <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
                                     data?.current.temperature_2m <= 12 && "text-blue-300",
                                     data?.current.temperature_2m > 12 &&
