@@ -1,6 +1,6 @@
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { DropletIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, DropletIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
 import { weatherIcons } from "../../utils/weatherIcons";
@@ -17,6 +17,10 @@ type data = {
         relative_humidity_2m: string;
         apparent_temperature: string;
     },
+    daily: {
+        temperature_2m_max: Array<number>;
+        temperature_2m_min: Array<number>;
+    };
     current: {
         is_day: number,
         weather_code: number,
@@ -66,16 +70,26 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                             'flex flex-col items-center gap-2',
                         )}>
                             <div className="flex">
-
                                 <span className={clsx(
                                     '[&_svg]:text-blue-400',
                                     '[&_svg]:h-30 [&_svg]:w-30',
                                     'md:[&_svg]:h-40 md:[&_svg]:w-40'
                                 )}>{weatherIcon}</span>
-                                <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
-                                    getTempColor(data.current.temperature_2m)
-                                )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
-
+                                <div>
+                                    <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
+                                        getTempColor(data.current.temperature_2m)
+                                    )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
+                                    <p className="text-center flex justify-center gap-2"> <span className={clsx(
+                                        getTempColor(data.daily.temperature_2m_min[0]),
+                                        'flex'
+                                    )}>{data.daily.temperature_2m_min[0]}<ArrowDownIcon color="gray" /></span>
+                                        |
+                                        <span className={clsx(
+                                            getTempColor(data.daily.temperature_2m_max[0]),
+                                            'flex'
+                                        )}>{data.daily.temperature_2m_max[0]}<ArrowUpIcon color="gray" /></span>
+                                    </p>
+                                </div>
                             </div>
                             <div className="flex items-center gap-2 [&_svg]:text-red-400">
                                 <MapPinIcon />
