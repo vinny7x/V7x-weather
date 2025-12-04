@@ -4,6 +4,7 @@ export function useReverseGeocode(coords: { lat: number; lon: number; } | null) 
     return useQuery({
         queryKey: ['location', coords],
         enabled: !!coords,
+        placeholderData: (prev) => prev,
         queryFn: async () => {
             const res = await fetch(
                 `https://nominatim.openstreetmap.org/reverse?lat=${coords?.lat}&lon=${coords?.lon}&format=json`

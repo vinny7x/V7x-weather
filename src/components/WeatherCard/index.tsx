@@ -39,7 +39,6 @@ type WeatherCardProps = {
 
 export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
-
     const location = useReverseGeocode(coords);
     const weatherLabel = getWeather(data?.current.weather_code);
     const weatherIcon = weatherIcons[weatherLabel];
