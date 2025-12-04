@@ -1,26 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { WeatherCard } from "../../components/WeatherCard";
+import { useGeolocalization } from "../../hooks/useGeolocation";
 
 export function Home() {
-    const [coords, setCoords] = useState<{ lat: number, lon: number; } | null>(null);
-    const [geoError, setGeoError] = useState(false);
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                setCoords({
-                    lat: pos.coords.latitude,
-                    lon: pos.coords.longitude,
-                });
-            },
-            () => {
-                setGeoError(true);
-            }
-        );
-    }, []);
+    const { coords, geoError } = useGeolocalization();
 
     const { data, isLoading } = useQuery({
         queryKey: ["weather", coords],
