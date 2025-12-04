@@ -4,7 +4,6 @@ import { Home } from "./pages/Home";
 const queryClient = new QueryClient(); // fora do componente
 
 function App() {
-  
 
   return (
     <QueryClientProvider client={queryClient}>

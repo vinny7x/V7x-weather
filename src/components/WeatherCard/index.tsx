@@ -4,6 +4,7 @@ import { DropletIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, Thermomete
 import { getWeather } from "../../utils/getWeather";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
 import { weatherIcons } from "../../utils/weatherIcons";
+import { getTempColor } from "../../utils/getTempColor";
 
 type data = {
     latitude: number;
@@ -60,10 +61,8 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
                         <div className={clsx(
                             'flex flex-col items-center gap-2',
-
                         )}>
                             <div className="flex">
-
 
                                 <span className={clsx(
                                     '[&_svg]:text-blue-400',
@@ -71,13 +70,8 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     'md:[&_svg]:h-40 md:[&_svg]:w-40'
                                 )}>{weatherIcons[getWeather(data.current.weather_code)]}</span>
                                 <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
-                                    data?.current.temperature_2m <= 12 && "text-blue-300",
-                                    data?.current.temperature_2m > 12 &&
-                                    data?.current.temperature_2m <= 25 &&
-                                    "text-green-300",
-                                    data?.current.temperature_2m > 25 && "text-red-300"
+                                   getTempColor(data.current.temperature_2m)
                                 )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
-
 
                             </div>
                             <div className="flex items-center gap-2 [&_svg]:text-red-400">
