@@ -1,9 +1,9 @@
 import { SpinLoader } from "../SpinLoader";
 import clsx from "clsx";
-import { ArrowDownIcon, ArrowUpIcon, DropletIcon, MapPinIcon, MoonIcon, SunIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
+import { ArrowDownIcon, ArrowUpIcon, DropletIcon, MapPinIcon, ThermometerIcon, ThermometerSunIcon, WindIcon } from "lucide-react";
 import { getWeather } from "../../utils/getWeather";
 import { useReverseGeocode } from "../../hooks/useReverseGeocode";
-import { weatherIcons } from "../../utils/weatherIcons";
+import { getWeatherIcon } from "../../utils/getWeatherIcon";
 import { getTempColor } from "../../utils/getTempColor";
 
 type data = {
@@ -41,8 +41,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
     const location = useReverseGeocode(coords);
     const weatherLabel = getWeather(data?.current.weather_code);
-    const weatherIcon = weatherIcons[weatherLabel];
-
+    const weatherIcon = getWeatherIcon(data?.current.weather_code, data?.current.is_day);
     return (
         <div className="flex justify-center">
             <div
@@ -55,11 +54,6 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
 
                 {isLoading || !data ? <SpinLoader /> : (<>
 
-                    <span className="fixed">
-
-                        {data.current.is_day ? <SunIcon color="white" size='24' /> : <MoonIcon color="white" size='24' />}
-                    </span>
-
                     <h2 className={clsx(
                         'text-3xl text-white text-center'
                     )}></h2>
@@ -68,12 +62,12 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                         <div className={clsx(
                             'flex flex-col items-center gap-2',
                         )}>
-                            <div className="flex">
-                                <span className={clsx(
-                                    '[&_svg]:text-blue-400',
-                                    '[&_svg]:h-30 [&_svg]:w-30',
-                                    'md:[&_svg]:h-40 md:[&_svg]:w-40'
-                                )}>{weatherIcon}</span>
+                            <div className="flex items-center">
+                                <img src={weatherIcon} alt="" className={
+                                    clsx(
+                                        'w-40'
+                                    )
+                                } />
                                 <div>
                                     <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
                                         getTempColor(data.current.temperature_2m)
@@ -90,6 +84,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     </p>
                                 </div>
                             </div>
+
                             <div className="flex items-center gap-2 [&_svg]:text-red-400">
                                 <MapPinIcon />
                                 {location.isLoading ? (
