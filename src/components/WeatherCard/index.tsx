@@ -51,12 +51,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                     'shadow-lg shadow-white/30'
                 )}
             >
-
                 {isLoading || !data ? <SpinLoader /> : (<>
-
-                    <h2 className={clsx(
-                        'text-3xl text-white text-center'
-                    )}></h2>
                     <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
 
                         <div className={clsx(
@@ -69,9 +64,9 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     )
                                 } />
                                 <div>
-                                    <p className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
+                                    <h1 className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
                                         getTempColor(data.current.temperature_2m)
-                                    )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></p>
+                                    )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></h1>
                                     <p className="text-center flex justify-center gap-2"> <span className={clsx(
                                         getTempColor(data.daily.temperature_2m_min[0]),
                                         'flex'
