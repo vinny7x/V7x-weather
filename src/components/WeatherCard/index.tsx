@@ -58,7 +58,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                             'flex flex-col items-center gap-2',
                         )}>
                             <div className="flex items-center">
-                                <img src={weatherIcon} alt="" className={
+                                <img src={weatherIcon} alt={weatherLabel} className={
                                     clsx(
                                         'w-40'
                                     )
@@ -70,18 +70,18 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     <p className="text-center flex justify-center gap-2"> <span className={clsx(
                                         getTempColor(data.daily.temperature_2m_min[0]),
                                         'flex'
-                                    )}>{data.daily.temperature_2m_min[0]}<ArrowDownIcon color="gray" /></span>
+                                    )}>{data.daily.temperature_2m_min[0]}<ArrowDownIcon color="gray" aria-label="Ícone de uma seta para cima" /></span>
                                         |
                                         <span className={clsx(
                                             getTempColor(data.daily.temperature_2m_max[0]),
                                             'flex'
-                                        )}>{data.daily.temperature_2m_max[0]}<ArrowUpIcon color="gray" /></span>
+                                        )}>{data.daily.temperature_2m_max[0]}<ArrowUpIcon color="gray" aria-label="Ícone de uma seta para baixo" /></span>
                                     </p>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2 [&_svg]:text-red-400">
-                                <MapPinIcon />
+                                <MapPinIcon aria-label="Ícone de um marcador de localização" />
                                 {location.isLoading ? (
                                     <SpinLoader />
                                 ) : (
@@ -112,7 +112,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     'text-sm md:text-base'
                                 )}
                             >
-                                <ThermometerSunIcon />
+                                <ThermometerSunIcon aria-label="Ícone de um termômetro com um sol atrás" />
                                 Sensação térmica:
                                 <span className="font-semibold text-orange-300">
                                     {data.current.apparent_temperature} {data.current_units.apparent_temperature}
@@ -126,7 +126,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     'text-sm md:text-base'
                                 )}
                             >
-                                <WindIcon />
+                                <WindIcon aria-label="Ícone de vento" />
                                 Vento:
                                 <span className="font-semibold text-blue-300">
                                     {data.current.wind_speed_10m} {data.current_units.wind_speed_10m}
@@ -140,7 +140,7 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                                     'text-sm md:text-base'
                                 )}
                             >
-                                <DropletIcon />
+                                <DropletIcon aria-label="Ícone de gota" />
                                 Umidade:
                                 <span className="font-semibold text-cyan-300">
                                     {data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}
