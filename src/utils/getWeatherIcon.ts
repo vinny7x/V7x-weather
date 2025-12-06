@@ -6,20 +6,20 @@ export function getWeatherIcon(weatherCode: number, isDay: number) {
     // Céu limpo
     case 0:
     case 1:
-      return `weatherIcons/clear-${isDayString}.svg`;
+      return `images/weatherIcons/clear-${isDayString}.svg`;
 
     // Parcialmente nublado
     case 2:
-      return `weatherIcons/partly-cloudy-${isDayString}.svg`;
+      return `images/weatherIcons/partly-cloudy-${isDayString}.svg`;
 
     // Nublado
     case 3:
-      return `weatherIcons/overcast-${isDayString}.svg`;
+      return `images/weatherIcons/overcast-${isDayString}.svg`;
 
     // Neblina / nevoeiro
     case 45:
     case 48:
-      return `weatherIcons/fog-${isDayString}.svg`;
+      return `images/weatherIcons/fog-${isDayString}.svg`;
 
     // Chuvisco / drizzle
     case 51:
@@ -27,18 +27,18 @@ export function getWeatherIcon(weatherCode: number, isDay: number) {
     case 55:
     case 56:
     case 57:
-      return `weatherIcons/drizzle.svg`;
+      return `images/weatherIcons/drizzle.svg`;
 
     // Chuva
     case 61:
     case 63:
     case 65:
-      return `weatherIcons/rain.svg`;
+      return `images/weatherIcons/rain.svg`;
 
     // Chuva congelante
     case 66:
     case 67:
-      return `weatherIcons/sleet.svg`;
+      return `images/weatherIcons/sleet.svg`;
 
     // Neve
     case 71:
@@ -47,23 +47,23 @@ export function getWeatherIcon(weatherCode: number, isDay: number) {
     case 77:
     case 85:
     case 86:
-      return `weatherIcons/snow.svg`;
+      return `images/weatherIcons/snow.svg`;
 
     // Pancadas de chuva
     case 80:
     case 81:
     case 82:
-      return `weatherIcons/rain.svg`;
+      return `images/weatherIcons/rain.svg`;
 
     // Tempestade sem granizo
     case 95:
-      return `weatherIcons/thunderstorms-${isDayString}.svg`;
+      return `images/weatherIcons/thunderstorms-${isDayString}.svg`;
 
     // Tempestade com granizo
     case 96:
     case 99:
-      return `weatherIcons/hail.svg`;
+      return `images/weatherIcons/hail.svg`;
     default:
-      return 'weatherIcons/not-available.svg';
+      return 'images/weatherIcons/not-available.svg';
   }
 }
