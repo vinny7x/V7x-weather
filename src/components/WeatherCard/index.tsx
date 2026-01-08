@@ -18,7 +18,7 @@ type data = {
         apparent_temperature: string;
     },
     daily: {
-        time: Array<number>;
+        time: Array<string>;
         temperature_2m_max: Array<number>;
         temperature_2m_min: Array<number>;
         weather_code: Array<number>;
@@ -34,12 +34,11 @@ type data = {
 };
 
 type WeatherCardProps = {
-    isLoading: boolean;
     data: data;
     coords: { lat: number, lon: number; } | null;
 };
 
-export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
+export function WeatherCard({ data, coords }: WeatherCardProps) {
 
     const location = useReverseGeocode(coords);
     const weatherLabel = getWeather(data?.current.weather_code);
@@ -53,106 +52,105 @@ export function WeatherCard({ data, isLoading, coords }: WeatherCardProps) {
                     'shadow-lg shadow-white/30'
                 )}
             >
-                {isLoading || !data ? <SpinLoader /> : (<>
-                    <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
 
-                        <div className={clsx(
-                            'flex flex-col items-center gap-2',
-                        )}>
-                            <div className="flex items-center">
-                                <img src={weatherIcon} alt={weatherLabel} className={
-                                    clsx(
-                                        'w-40'
-                                    )
-                                } />
-                                <div>
-                                    <h1 className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
-                                        getTempColor(data.current.temperature_2m)
-                                    )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></h1>
-                                    <p className="text-center flex justify-center gap-2"> <span className={clsx(
-                                        getTempColor(data.daily.temperature_2m_min[0]),
+                <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-white">
+
+                    <div className={clsx(
+                        'flex flex-col items-center gap-2',
+                    )}>
+                        <div className="flex items-center">
+                            <img src={weatherIcon} alt={weatherLabel} className={
+                                clsx(
+                                    'w-40'
+                                )
+                            } />
+                            <div>
+                                <h1 className="text-3xl flex items-baseline [&_svg]:text-blue-200"><ThermometerIcon /> <span className={clsx(
+                                    getTempColor(data.current.temperature_2m)
+                                )}> {data.current.temperature_2m}{data.current_units.temperature_2m}</span></h1>
+                                <p className="text-center flex justify-center gap-2"> <span className={clsx(
+                                    getTempColor(data.daily.temperature_2m_min[0]),
+                                    'flex'
+                                )}>{data.daily.temperature_2m_min[0]}<ArrowDownIcon color="gray" aria-label="Ícone de uma seta para cima" /></span>
+                                    |
+                                    <span className={clsx(
+                                        getTempColor(data.daily.temperature_2m_max[0]),
                                         'flex'
-                                    )}>{data.daily.temperature_2m_min[0]}<ArrowDownIcon color="gray" aria-label="Ícone de uma seta para cima" /></span>
-                                        |
-                                        <span className={clsx(
-                                            getTempColor(data.daily.temperature_2m_max[0]),
-                                            'flex'
-                                        )}>{data.daily.temperature_2m_max[0]}<ArrowUpIcon color="gray" aria-label="Ícone de uma seta para baixo" /></span>
-                                    </p>
-                                </div>
+                                    )}>{data.daily.temperature_2m_max[0]}<ArrowUpIcon color="gray" aria-label="Ícone de uma seta para baixo" /></span>
+                                </p>
                             </div>
-
-                            <div className="flex items-center gap-2 [&_svg]:text-red-400">
-                                <MapPinIcon aria-label="Ícone de um marcador de localização" />
-                                {location.isLoading ? (
-                                    <SpinLoader />
-                                ) : (
-                                    location.data && (
-                                        <span>
-                                            {location.data.address.town ||
-                                                location.data.address.city ||
-                                                location.data.address.village ||
-                                                "Local desconhecido"} - {location.data.address.state}
-                                        </span>
-                                    )
-                                )}
-                            </div>
-                            <p className="text-gray-400">{weatherLabel}</p>
-
                         </div>
 
-                        <div
-                            className={clsx(
-                                'flex flex-col gap-1 justify-center items-start',
-                                '[&_svg]:size-5'
+                        <div className="flex items-center gap-2 [&_svg]:text-red-400">
+                            <MapPinIcon aria-label="Ícone de um marcador de localização" />
+                            {location.isLoading ? (
+                                <SpinLoader />
+                            ) : (
+                                location.data && (
+                                    <span>
+                                        {location.data.address.town ||
+                                            location.data.address.city ||
+                                            location.data.address.village ||
+                                            "Local desconhecido"} - {location.data.address.state}
+                                    </span>
+                                )
                             )}
-                        >
-                            <p
-                                className={clsx(
-                                    'flex gap-2 justify-center items-center',
-                                    '[&_svg]:text-orange-300',
-                                    'text-sm md:text-base'
-                                )}
-                            >
-                                <ThermometerSunIcon aria-label="Ícone de um termômetro com um sol atrás" />
-                                Sensação térmica:
-                                <span className="font-semibold text-orange-300">
-                                    {data.current.apparent_temperature} {data.current_units.apparent_temperature}
-                                </span>
-                            </p>
-
-                            <p
-                                className={clsx(
-                                    'flex gap-2 justify-center items-center',
-                                    '[&_svg]:text-blue-300',
-                                    'text-sm md:text-base'
-                                )}
-                            >
-                                <WindIcon aria-label="Ícone de vento" />
-                                Vento:
-                                <span className="font-semibold text-blue-300">
-                                    {data.current.wind_speed_10m} {data.current_units.wind_speed_10m}
-                                </span>
-                            </p>
-
-                            <p
-                                className={clsx(
-                                    'flex gap-2 justify-center items-center',
-                                    '[&_svg]:text-cyan-300',
-                                    'text-sm md:text-base'
-                                )}
-                            >
-                                <DropletIcon aria-label="Ícone de gota" />
-                                Umidade:
-                                <span className="font-semibold text-cyan-300">
-                                    {data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}
-                                </span>
-                            </p>
                         </div>
+                        <p className="text-gray-400">{weatherLabel}</p>
 
                     </div>
-                </>
-                )}
+
+                    <div
+                        className={clsx(
+                            'flex flex-col gap-1 justify-center items-start',
+                            '[&_svg]:size-5'
+                        )}
+                    >
+                        <p
+                            className={clsx(
+                                'flex gap-2 justify-center items-center',
+                                '[&_svg]:text-orange-300',
+                                'text-sm md:text-base'
+                            )}
+                        >
+                            <ThermometerSunIcon aria-label="Ícone de um termômetro com um sol atrás" />
+                            Sensação térmica:
+                            <span className="font-semibold text-orange-300">
+                                {data.current.apparent_temperature} {data.current_units.apparent_temperature}
+                            </span>
+                        </p>
+
+                        <p
+                            className={clsx(
+                                'flex gap-2 justify-center items-center',
+                                '[&_svg]:text-blue-300',
+                                'text-sm md:text-base'
+                            )}
+                        >
+                            <WindIcon aria-label="Ícone de vento" />
+                            Vento:
+                            <span className="font-semibold text-blue-300">
+                                {data.current.wind_speed_10m} {data.current_units.wind_speed_10m}
+                            </span>
+                        </p>
+
+                        <p
+                            className={clsx(
+                                'flex gap-2 justify-center items-center',
+                                '[&_svg]:text-cyan-300',
+                                'text-sm md:text-base'
+                            )}
+                        >
+                            <DropletIcon aria-label="Ícone de gota" />
+                            Umidade:
+                            <span className="font-semibold text-cyan-300">
+                                {data.current.relative_humidity_2m} {data.current_units.relative_humidity_2m}
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     );

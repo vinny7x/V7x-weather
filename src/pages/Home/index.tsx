@@ -4,10 +4,11 @@ import { WeatherCard } from "../../components/WeatherCard";
 import { useGeolocalization } from "../../hooks/useGeolocation";
 import { useWeather } from "../../hooks/useWeather";
 import { ForecastTable } from "../../components/ForecastTable";
+import { SpinLoader } from "../../components/SpinLoader";
 
 export function Home() {
     const { coords, geoError } = useGeolocalization();
-    const { data, isLoading } = useWeather(coords);
+    const { data, isFetching } = useWeather(coords);
 
     if (geoError) {
         return (
@@ -25,15 +26,15 @@ export function Home() {
     return (
         <>
             <Header />
+            {isFetching && <SpinLoader />}
             {data && data.daily && (
                 <>
-                <h1 className="text-2xl text-center text-white">Clima atual</h1>
-                    <WeatherCard data={data} isLoading={isLoading} coords={coords} />
-                <h1 className="text-2xl text-center text-white">Previsão</h1>
+                    <h1 className="text-2xl text-center text-white">Clima atual</h1>
+                    <WeatherCard data={data} coords={coords} />
+                    <h1 className="text-2xl text-center text-white">Previsão</h1>
                     <ForecastTable daily={data.daily} />
                 </>
             )}
-
         </>
     );
 }
