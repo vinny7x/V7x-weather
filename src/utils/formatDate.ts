@@ -1,8 +1,4 @@
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-
 export function formatDate(date: string) {
-  return format(new Date(date), "dd/MM", {
-    locale: ptBR,
-  });
+  const [, month, day] = date.split("-");
+  return `${day}/${month}`;
 }
