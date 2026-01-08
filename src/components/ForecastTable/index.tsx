@@ -16,13 +16,15 @@ export function ForecastTable({ daily }: ForecastTableDataProps) {
     return (
         <div className="flex flex-wrap gap-2 justify-center m-4">
             {daily.time
-                .filter((time) => time != today)
-                .map((time, i) => (
+                .map((time, i) => ({ time, i }))
+                .filter(({ time }) => time != today)
+                .map(({ time, i }) => (
                     <div key={time} className={clsx(
                         "p-4",
                         "bg-neutral-600 rounded-lg border border-white text-white",
                         'shadow-lg shadow-white/30'
                     )}>
+
                         <img className="" src={getWeatherIcon(daily.weather_code[i], 1)}></img>
                         <p className="text-center">{formatDate(time)}</p>
                         <span className="flex">
