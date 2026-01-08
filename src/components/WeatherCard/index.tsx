@@ -18,8 +18,10 @@ type data = {
         apparent_temperature: string;
     },
     daily: {
+        time: Array<number>;
         temperature_2m_max: Array<number>;
         temperature_2m_min: Array<number>;
+        weather_code: Array<number>;
     };
     current: {
         is_day: number,

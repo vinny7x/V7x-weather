@@ -3,10 +3,11 @@ import { Header } from "../../components/Header";
 import { WeatherCard } from "../../components/WeatherCard";
 import { useGeolocalization } from "../../hooks/useGeolocation";
 import { useWeather } from "../../hooks/useWeather";
+import { ForecastTable } from "../../components/ForecastTable";
 
 export function Home() {
     const { coords, geoError } = useGeolocalization();
-    const {data, isLoading} = useWeather(coords)
+    const { data, isLoading } = useWeather(coords);
 
     if (geoError) {
         return (
@@ -24,6 +25,15 @@ export function Home() {
     return (
         <>
             <Header />
-            <WeatherCard data={data} isLoading={isLoading} coords={coords} /></>
+            {data && data.daily && (
+                <>
+                <h1 className="text-2xl text-center text-white">Clima atual</h1>
+                    <WeatherCard data={data} isLoading={isLoading} coords={coords} />
+                <h1 className="text-2xl text-center text-white">Previsão</h1>
+                    <ForecastTable daily={data.daily} />
+                </>
+            )}
+
+        </>
     );
 }
